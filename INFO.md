@@ -56,10 +56,22 @@ list all objects
 sui client objects
 ```
 
-expand object
+reading data
 
 ```bash
 sui client object 0xf151233df41b5110d1e3d68bad0853b268f403a62ff5ec36a78aeaac25624f10
+```
+
+call function set new message.
+
+```bash
+sui client call --function set_message --module message --package 0xec8ca60d8df8b33c736dcf63703a3926cef2f3d30c14dc9b96452f8eb465d7f1 --args 0xf151233df41b5110d1e3d68bad0853b268f403a62ff5ec36a78aeaac25624f10 "Your new message" --gas-budget 10000000
+```
+
+call function. Not useful
+
+```bash
+sui client call --function get_message --module message --package 0xec8ca60d8df8b33c736dcf63703a3926cef2f3d30c14dc9b96452f8eb465d7f1 --args 0xf151233df41b5110d1e3d68bad0853b268f403a62ff5ec36a78aeaac25624f10 --gas-budget 10000000
 ```
 
 ## Explorer

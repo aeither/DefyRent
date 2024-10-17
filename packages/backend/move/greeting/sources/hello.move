@@ -64,4 +64,3 @@ module greeting::message {
         init(ctx)
     }
 }
-
