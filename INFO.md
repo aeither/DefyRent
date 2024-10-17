@@ -29,6 +29,11 @@ pn build
 pn test
 ```
 
+Test with filter
+```bash
+sui move test message_tests
+```
+
 ## Deploy
 
 ```bash
@@ -45,7 +50,7 @@ https://testnet.suivision.xyz/txblock/7WjvUhcpGbgBpv4MBAnGWMXMZhcBw4NgCb4ocqEcau
 
 smart contract
 
-https://testnet.suivision.xyz/package/0x49ce8e392b6238f18011580be3973c47c46583abc8650f596e2704ba89dbc231?tab=Code
+https://testnet.suivision.xyz/package/0xec8ca60d8df8b33c736dcf63703a3926cef2f3d30c14dc9b96452f8eb465d7f1?tab=Code
 
 
 ## Walrus

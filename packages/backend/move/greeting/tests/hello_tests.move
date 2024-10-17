@@ -1,46 +1,63 @@
 #[test_only]
 module greeting::message_tests {
-    use sui::test_scenario::{Self, Scenario};
+    use sui::test_scenario::{Self as ts, Scenario};
     use greeting::message::{Self, Message};
+    use std::string;
 
     #[test]
     fun test_message_flow() {
         let owner = @0xCAFE;
-        let mut scenario = test_scenario::begin(owner);
+        let mut scenario = ts::begin(owner);
 
-        // Test the init function (implicitly called)
-        test_scenario::next_tx(&mut scenario, owner);
+        // Test the init function
         {
-            // Check if the Message object is created and shared
-            assert!(test_scenario::has_most_recent_shared<Message>(), 0);
+            message::init_for_testing(ts::ctx(&mut scenario));
         };
 
         // Test getting the initial message
-        test_scenario::next_tx(&mut scenario, owner);
+        ts::next_tx(&mut scenario, owner);
         {
-            let message = test_scenario::take_shared<Message>(&mut scenario);
+            let message = ts::take_shared<Message>(&scenario);
             let content = message::get_message(&message);
-            assert!(content == b"Hello World", 1);
-            test_scenario::return_shared(message);
+            assert!(content == string::utf8(b"Hello World"), 0);
+            ts::return_shared(message);
         };
 
         // Test setting a new message
-        test_scenario::next_tx(&mut scenario, owner);
+        ts::next_tx(&mut scenario, owner);
         {
-            let mut message = test_scenario::take_shared<Message>(&mut scenario);
-            message::set_message(&mut message, b"New message", test_scenario::ctx(&mut scenario));
-            test_scenario::return_shared(message);
+            let mut message = ts::take_shared<Message>(&mut scenario);
+            message::set_message(&mut message, b"New message", ts::ctx(&mut scenario));
+            ts::return_shared(message);
         };
 
         // Verify the new message
-        test_scenario::next_tx(&mut scenario, owner);
+        ts::next_tx(&mut scenario, owner);
         {
-            let message = test_scenario::take_shared<Message>(&mut scenario);
+            let message = ts::take_shared<Message>(&scenario);
             let content = message::get_message(&message);
-            assert!(content == b"New message", 2);
-            test_scenario::return_shared(message);
+            assert!(content == string::utf8(b"New message"), 1);
+            ts::return_shared(message);
         };
 
-        test_scenario::end(scenario);
+        ts::end(scenario);
+    }
+
+    #[test]
+    #[expected_failure(abort_code = message::EEmptyMessage)]
+    fun test_set_empty_message() {
+        let owner = @0xCAFE;
+        let mut scenario = ts::begin(owner);
+
+        message::init_for_testing(ts::ctx(&mut scenario));
+
+        ts::next_tx(&mut scenario, owner);
+        {
+            let mut message = ts::take_shared<Message>(&mut scenario);
+            message::set_message(&mut message, b"", ts::ctx(&mut scenario));
+            ts::return_shared(message);
+        };
+
+        ts::end(scenario);
     }
 }
