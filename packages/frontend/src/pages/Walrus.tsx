@@ -6,7 +6,7 @@ const MediaUploader: React.FC = () => {
 	const [uploadedString, setUploadedString] = useState("");
 	const [retrievedString, setRetrievedString] = useState("");
 	const [uploadedMedia, setUploadedMedia] = useState("");
-	const [retrievedMedia, setRetrievedMedia] = useState("");
+	const [retrievedMedia, setRetrievedMedia] = useState<string | null>(null);
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState("");
 	const fileInputRef = useRef<HTMLInputElement>(null);
@@ -71,14 +71,11 @@ const MediaUploader: React.FC = () => {
 		setIsLoading(true);
 		setError("");
 		try {
-			const formData = new FormData();
-			formData.append("file", fileInputRef.current.files[0]);
-
 			const response = await fetch(
 				"https://publisher.walrus-testnet.walrus.space/v1/store?epochs=5",
 				{
 					method: "PUT",
-					body: formData,
+					body: fileInputRef.current.files[0],
 				},
 			);
 
@@ -112,10 +109,9 @@ const MediaUploader: React.FC = () => {
 				throw new Error("Media retrieval failed");
 			}
 
-			// Set the retrieved media URL directly
-			setRetrievedMedia(
-				`https://aggregator.walrus-testnet.walrus.space/v1/${uploadedMedia}`,
-			);
+			const blob = await response.blob();
+			const objectUrl = URL.createObjectURL(blob);
+			setRetrievedMedia(objectUrl);
 		} catch (err) {
 			setError(`Error retrieving media: ${(err as Error).message}`);
 		} finally {
