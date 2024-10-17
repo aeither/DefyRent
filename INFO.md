@@ -4,6 +4,7 @@ Resources
 @mysten/dapp-kit React SDK
 https://sdk.mystenlabs.com/typescript
 
+use Ask Sui Al https://docs.sui.io/ 
 
 ## Instructions
 
