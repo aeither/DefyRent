@@ -1,6 +1,6 @@
 import { useCurrentAccount } from '@mysten/dapp-kit'
 import { Button, TextField } from '@radix-ui/themes'
-import { ChangeEvent, FC, MouseEvent, PropsWithChildren, useState } from 'react'
+import { type ChangeEvent, type FC, type MouseEvent, type PropsWithChildren, useState } from 'react'
 import CustomConnectButton from '~~/components/CustomConnectButton'
 import AnimalEmoji from '~~/components/Emoji'
 import Loading from '~~/components/Loading'
@@ -116,6 +116,7 @@ const GreetingForm = () => {
                     getResponseDisplayField(data.data[0], 'image_url') ||
                     undefined
                   }
+                  // biome-ignore lint/a11y/noRedundantAlt: <explanation>
                   alt="Greeting NFT Image"
                 />
               </div>

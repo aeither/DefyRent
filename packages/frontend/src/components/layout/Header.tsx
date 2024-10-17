@@ -8,7 +8,7 @@ const Header = () => {
   return (
     <header className="supports-backdrop-blur:bg-white/60 dark:border-slate-50/1 sticky top-0 z-40 flex w-full flex-row flex-wrap items-center justify-center gap-4 bg-white/95 px-3 py-3 backdrop-blur transition-colors duration-500 sm:justify-between sm:gap-3 lg:z-50 lg:border-b lg:border-slate-900/10 dark:bg-transparent">
       <Link
-        href="#"
+        href="/"
         className="flex flex-col items-center justify-center gap-1 text-sds-dark outline-none hover:no-underline sm:flex-row dark:text-sds-light"
       >
         <img src={Logo} alt="Logo" className="h-12 w-12" />
@@ -21,6 +21,11 @@ const Header = () => {
         <div className="flex flex-row items-center justify-center gap-3">
           <Balance />
           <NetworkType />
+        </div>
+
+        <div className="flex flex-row items-center justify-center gap-3">
+          <Link href="/alpha" className="text-sds-dark hover:no-underline dark:text-sds-light">Alpha</Link>
+          <Link href="/beta" className="text-sds-dark hover:no-underline dark:text-sds-light">Beta</Link>
         </div>
 
         {/* @todo: Find a better way to style ConnectButton for example through className, which is currently not supported. */}
