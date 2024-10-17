@@ -15,8 +15,14 @@ sui client faucet --address 0x978110b86146faa562d72a12131c5dc5021dd96d88e715c79d
 
 ## Transfer
 
+list all objects
+
 ```bash
-sui client transfer-sui --amount 1000000000 --to 0x978110b86146faa562d72a12131c5dc5021dd96d88e715c79d14fb9df0406c41 --gas-budget 10000000
+sui client objects
+```
+
+```bash
+sui client transfer-sui --sui-coin-object-id 0xdfa54b63482597360cc648b1cd6d6dce63c701786fb0e63fc4812f342ba9ea82 --to 0x978110b86146faa562d72a12131c5dc5021dd96d88e715c79d14fb9df0406c41 --amount 1234567 --gas-budget 900000000
 ```
 
 ## Build & Test
@@ -41,6 +47,20 @@ pn backend:ship
 ```
 
 what it does is `sui client publish --gas-budget 100000000 ./move/greeting`
+
+## Interact
+
+list all objects
+
+```bash
+sui client objects
+```
+
+expand object
+
+```bash
+sui client object 0xf151233df41b5110d1e3d68bad0853b268f403a62ff5ec36a78aeaac25624f10
+```
 
 ## Explorer
 
