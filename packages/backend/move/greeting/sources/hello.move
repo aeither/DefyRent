@@ -4,7 +4,7 @@ module greeting::message {
     use sui::tx_context::{Self, TxContext};
 
     // Define the Message struct
-    struct Message has key, store {
+    public struct Message has key, store {
         id: UID,
         content: vector<u8>
     }
