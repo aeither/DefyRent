@@ -1,20 +1,22 @@
 module greeting::nft {
     use std::string::String;
     use sui::event;
+    use sui::object::{Self, UID};
+    use sui::tx_context::{Self, TxContext};
 
     /// An example NFT that can be minted by anybody. A Puppy is
     /// their puppy at any time and even change the image to the
     /// puppy's liking.
-public struct Puppy has key, store {
-    id: UID,
-    name: String,
-    url: String,
-}
+    public struct Puppy has key, store {
+        id: UID,
+        name: String,
+        url: String,
+    }
 
     /// Event: emitted when a new Puppy is minted.
     public struct PuppyMinted has copy, drop {
         /// ID of the Puppy
-        puppy_id: ID,
+        puppy_id: address,
         /// The address of the NFT minter
         minted_by: address,
     }
@@ -29,8 +31,8 @@ public struct Puppy has key, store {
         let id = object::new(ctx);
 
         event::emit(PuppyMinted {
-            puppy_id: id.to_inner(),
-            minted_by: ctx.sender(),
+            puppy_id: object::uid_to_address(&id),
+            minted_by: tx_context::sender(ctx),
         });
 
         Puppy { id, name, url }
@@ -47,7 +49,12 @@ public struct Puppy has key, store {
     /// your use case. At last, who doesn't love puppies?
     public fun destroy(puppy: Puppy) {
         let Puppy { id, url: _, name: _ } = puppy;
-        id.delete()
+        object::delete(id)
+    }
+
+    /// Transfer the Puppy to a new owner
+    public fun transfer(puppy: Puppy, recipient: address) {
+        transfer::transfer(puppy, recipient);
     }
 
     // Getters for properties.
@@ -56,8 +63,12 @@ public struct Puppy has key, store {
     // to decide which fields to expose and which to keep private.
 
     /// Get the Puppy's `name`
-    public fun name(puppy: &Puppy): String { puppy.name }
+    public fun name(puppy: &Puppy): &String {
+        &puppy.name
+    }
 
     /// Get the Puppy's `url`
-    public fun url(puppy: &Puppy): String { puppy.url }
+    public fun url(puppy: &Puppy): &String {
+        &puppy.url
+    }
 }
