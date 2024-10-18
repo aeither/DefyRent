@@ -1,7 +1,8 @@
 export const NFTInfo = {
 	name: "WalrusRent #1234",
 	description: "Decentralized Rent Deposit NFT for 123 Main St, Apt 4B",
-	image: "ipfs://QmAbCdEfGhIjKlMnOpQrStUvWxYz1234567890",
+	image:
+		"https://aggregator.walrus-testnet.walrus.space/v1/wSqp_roMTUfQ1z0XaBxDf3zFSnysTqNCrsAXdKl8yhg",
 	external_url: "https://walrusrent.com/nft/1234",
 	attributes: [
 		{
@@ -62,12 +63,15 @@ export const NFTInfo = {
 		},
 		propertyCondition: {
 			checkInDate: "2024-11-01",
-			checkInReport: "ipfs://QmZxCvYuLnOpQrStUvWxYz1234567890AbCdEfGhIj",
+			checkInReport:
+				"https://aggregator.walrus-testnet.walrus.space/v1/wSqp_roMTUfQ1z0XaBxDf3zFSnysTqNCrsAXdKl8yhg",
 			lastInspectionDate: "2025-05-01",
-			lastInspectionReport: "ipfs://QmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVw",
+			lastInspectionReport:
+				"https://aggregator.walrus-testnet.walrus.space/v1/wSqp_roMTUfQ1z0XaBxDf3zFSnysTqNCrsAXdKl8yhg",
 		},
 		disputeResolution: {
-			arbitrator: "0x5678901234567890123456789012345678901234",
+			arbitrator:
+				"https://aggregator.walrus-testnet.walrus.space/v1/wSqp_roMTUfQ1z0XaBxDf3zFSnysTqNCrsAXdKl8yhg",
 			resolutionMechanism: "Decentralized Arbitration Network",
 		},
 	},

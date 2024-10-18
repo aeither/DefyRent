@@ -120,13 +120,13 @@ const MediaUploader: React.FC = () => {
 	};
 
 	return (
-		<div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md">
-			<h1 className="text-3xl font-bold mb-6 text-center text-gray-800">
+		<div className="max-w-2xl mx-auto p-6 rounded-lg shadow-md">
+			<h1 className="text-3xl font-bold mb-6 text-center">
 				String and Media Uploader
 			</h1>
 
 			<div className="mb-8">
-				<h2 className="text-2xl font-semibold mb-4 text-gray-700">
+				<h2 className="text-2xl font-semibold mb-4 ">
 					String Upload and Retrieval
 				</h2>
 				<input
@@ -157,7 +157,7 @@ const MediaUploader: React.FC = () => {
 			</div>
 
 			<div className="mb-8">
-				<h2 className="text-2xl font-semibold mb-4 text-gray-700">
+				<h2 className="text-2xl font-semibold mb-4 ">
 					Media Upload and Retrieval
 				</h2>
 				<input type="file" ref={fileInputRef} className="mb-4" />
@@ -191,7 +191,7 @@ const MediaUploader: React.FC = () => {
 
 			{uploadedString && (
 				<div className="mb-6 p-4 rounded-md">
-					<h2 className="text-xl font-semibold mb-2 text-gray-700">
+					<h2 className="text-xl font-semibold mb-2 ">
 						Uploaded String ID:
 					</h2>
 					<p className="break-all">{uploadedString}</p>
@@ -200,7 +200,7 @@ const MediaUploader: React.FC = () => {
 
 			{retrievedString && (
 				<div className="mb-6 p-4 rounded-md">
-					<h2 className="text-xl font-semibold mb-2 text-gray-700">
+					<h2 className="text-xl font-semibold mb-2 ">
 						Retrieved String:
 					</h2>
 					<p className="break-all">{retrievedString}</p>
@@ -209,7 +209,7 @@ const MediaUploader: React.FC = () => {
 
 			{uploadedMedia && (
 				<div className="mb-6 p-4 bg-gray-100 rounded-md">
-					<h2 className="text-xl font-semibold mb-2 text-gray-700">
+					<h2 className="text-xl font-semibold mb-2 ">
 						Uploaded Media ID:
 					</h2>
 					<p className="break-all">{uploadedMedia}</p>
@@ -218,7 +218,7 @@ const MediaUploader: React.FC = () => {
 
 			{retrievedMedia && (
 				<div className="mb-6">
-					<h2 className="text-xl font-semibold mb-2 text-gray-700">
+					<h2 className="text-xl font-semibold mb-2 ">
 						Retrieved Media:
 					</h2>
 					<img
