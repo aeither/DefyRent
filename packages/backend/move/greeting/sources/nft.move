@@ -38,9 +38,9 @@ module greeting::nft {
         let values = vector[
             string::utf8(b"{name}"),
             string::utf8(b"{url}"),
-            string::utf8(b"A beautiful Rental NFT"),
+            string::utf8(b"Rental Unit #3827"),
             string::utf8(b"https://example.com"),
-            string::utf8(b"Rental NFT Creator"),];
+            string::utf8(b"Landlord"),];
 
         // Claim the `Publisher` for the package.
         let publisher = package::claim(otw, ctx);

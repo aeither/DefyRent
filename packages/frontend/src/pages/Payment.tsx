@@ -192,7 +192,7 @@ function PaymentPage() {
 		try {
 			const url = await uploadToWalrus();
 			await transact(
-				prepareTransaction(TESTNET_CONTRACT_PACKAGE_ID, url, "example.com"),
+				prepareTransaction(TESTNET_CONTRACT_PACKAGE_ID, "Rental Unit #2847", url),
 			);
 		} catch (err) {
 			console.error("Error during payment process:", err);
