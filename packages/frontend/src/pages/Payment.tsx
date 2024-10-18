@@ -39,9 +39,9 @@ const SuccessModal: React.FC<SuccessModalProps> = ({
 					Transaction Number: {transactionNumber}
 				</p>
 				<p className="text-xl font-semibold mb-2">
-					Amount paid: ${amount.toFixed(2)}
+					Amount paid: {amount.toFixed(2)} SUI
 				</p>
-				<p className="text-gray-600">Paid by {paymentMethod}</p>
+				<p className="text-gray-600">Paid with {paymentMethod}</p>
 				<button
 					type="button"
 					className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
@@ -97,7 +97,7 @@ function PaymentPage() {
 
 	return (
 		<div className="App">
-			<h1 className="text-2xl font-bold mb-4">NFT Metadata Uploader</h1>
+			<h1 className="text-2xl font-bold mb-4">Apartment #3252 Deposit</h1>
 			<button
 				type="button"
 				onClick={uploadToWalrus}
@@ -111,7 +111,7 @@ function PaymentPage() {
 				onClick={handlePayment}
 				className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
 			>
-				Pay
+				Pay with SUI
 			</button>
 			{error && <p className="error text-red-500 mt-2">{error}</p>}
 			{metadataUrl && (
@@ -124,7 +124,7 @@ function PaymentPage() {
 				<SuccessModal
 					transactionNumber="123456789"
 					amount={45.25}
-					paymentMethod="Credit Card"
+					paymentMethod="SUI"
 					onClose={() => setShowModal(false)}
 				/>
 			)}
