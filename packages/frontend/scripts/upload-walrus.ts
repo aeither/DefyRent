@@ -22,3 +22,8 @@ fetch("http://walrus-testnet.stakingdefenseleague.com:9001/v1/store", {
 /**
  * curl -X PUT "http://walrus-testnet.stakingdefenseleague.com:9001/v1/store" -d "some other string"
  */
+
+/**
+ * retrieving content
+ * http://walrus-testnet.stakingdefenseleague.com:9000/v1/y1GuyqLZ6IhZGHvHnoSKGQVexrTD6vqssfHxkTrs9cc
+ */
