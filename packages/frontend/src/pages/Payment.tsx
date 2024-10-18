@@ -1,7 +1,9 @@
+import { useAccounts } from "@mysten/dapp-kit";
 import { Transaction } from "@mysten/sui/transactions";
 import type { SuiSignAndExecuteTransactionOutput } from "@mysten/wallet-standard";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { TESTNET_CONTRACT_PACKAGE_ID } from "~~/config/networks";
 import { NFTInfo } from "~~/constants/info";
 import useTransact from "~~/hooks/useTransact";
 
@@ -68,15 +70,15 @@ const SuccessModal: React.FC<SuccessModalProps> = ({
 }) => {
 	return (
 		<div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-			<div className=" p-8 rounded-lg text-center">
-				<div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
-					{/* biome-ignore lint/a11y/noSvgWithoutTitle: <explanation> */}
+			<div className="p-8 rounded-lg bg-white text-center shadow-lg max-w-md w-full">
+				<div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
 					<svg
 						className="w-8 h-8 text-white"
 						fill="none"
 						stroke="currentColor"
 						viewBox="0 0 24 24"
 						xmlns="http://www.w3.org/2000/svg"
+						aria-hidden="true"
 					>
 						<path
 							strokeLinecap="round"
@@ -86,17 +88,20 @@ const SuccessModal: React.FC<SuccessModalProps> = ({
 						/>
 					</svg>
 				</div>
-				<h2 className="text-2xl font-bold mb-2">Payment Successful</h2>
-				<p className="text-gray-600 mb-2">
-					Transaction Number: {transactionNumber}
+				<h2 className="text-2xl font-bold mb-4 text-gray-800">
+					Payment Successful
+				</h2>
+				<p className="text-gray-700 mb-2">
+					Transaction Number:{" "}
+					<span className="font-medium">{transactionNumber}</span>
 				</p>
-				<p className="text-xl font-semibold mb-2">
+				<p className="text-xl font-semibold mb-2 text-gray-800">
 					Amount paid: {amount.toFixed(2)} SUI
 				</p>
-				<p className="text-gray-600">Paid with {paymentMethod}</p>
+				<p className="text-gray-700 mb-6">Paid with {paymentMethod}</p>
 				<button
 					type="button"
-					className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+					className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition duration-300 ease-in-out"
 					onClick={onClose}
 				>
 					Close
@@ -111,6 +116,7 @@ function PaymentPage() {
 	const [error, setError] = useState<string | null>(null);
 	const [showModal, setShowModal] = useState(false);
 	const navigate = useNavigate();
+	const [account] = useAccounts();
 
 	const { transact } = useTransact({
 		onSuccess: (data: SuiSignAndExecuteTransactionOutput) => {
@@ -121,7 +127,7 @@ function PaymentPage() {
 			setError(`Error minting NFT: ${e.message}`);
 		},
 	});
-	
+
 	const uploadToWalrus = async () => {
 		setIsLoading(true);
 		setError(null);
@@ -170,20 +176,24 @@ function PaymentPage() {
 		}
 	};
 
-	const prepareTransaction = (packageId: string, metadataUrl: string) => {
+	const prepareTransaction = (packageId: string, name: string, url: string) => {
 		const tx = new Transaction();
-		tx.moveCall({
-			arguments: [tx.pure.string(metadataUrl), tx.object("0x6")],
+		const puppy = tx.moveCall({
+			arguments: [tx.pure.string(name), tx.pure.string(url)],
 			target: `${packageId}::nft::mint`,
 		});
+
+		tx.transferObjects([puppy], tx.pure.address(account.address));
+
 		return tx;
 	};
 
 	const handlePayDeposit = async () => {
 		try {
 			const url = await uploadToWalrus();
-			const packageId = "0x..."; // Replace with your actual package ID
-			await transact(prepareTransaction(packageId, url));
+			await transact(
+				prepareTransaction(TESTNET_CONTRACT_PACKAGE_ID, url, "example.com"),
+			);
 		} catch (err) {
 			console.error("Error during payment process:", err);
 		}
