@@ -16,7 +16,7 @@ const MediaUploader: React.FC = () => {
 		setError("");
 		try {
 			const response = await fetch(
-				"https://publisher.walrus-testnet.walrus.space/v1/store",
+				"http://walrus-testnet.stakingdefenseleague.com:9001/v1/store",
 				{
 					method: "PUT",
 					body: inputString,
@@ -72,7 +72,7 @@ const MediaUploader: React.FC = () => {
 		setError("");
 		try {
 			const response = await fetch(
-				"https://publisher.walrus-testnet.walrus.space/v1/store?epochs=5",
+				"http://walrus-testnet.stakingdefenseleague.com:9001/v1/store",
 				{
 					method: "PUT",
 					body: fileInputRef.current.files[0],
@@ -191,36 +191,28 @@ const MediaUploader: React.FC = () => {
 
 			{uploadedString && (
 				<div className="mb-6 p-4 rounded-md">
-					<h2 className="text-xl font-semibold mb-2 ">
-						Uploaded String ID:
-					</h2>
+					<h2 className="text-xl font-semibold mb-2 ">Uploaded String ID:</h2>
 					<p className="break-all">{uploadedString}</p>
 				</div>
 			)}
 
 			{retrievedString && (
 				<div className="mb-6 p-4 rounded-md">
-					<h2 className="text-xl font-semibold mb-2 ">
-						Retrieved String:
-					</h2>
+					<h2 className="text-xl font-semibold mb-2 ">Retrieved String:</h2>
 					<p className="break-all">{retrievedString}</p>
 				</div>
 			)}
 
 			{uploadedMedia && (
 				<div className="mb-6 p-4 bg-gray-100 rounded-md">
-					<h2 className="text-xl font-semibold mb-2 ">
-						Uploaded Media ID:
-					</h2>
+					<h2 className="text-xl font-semibold mb-2 ">Uploaded Media ID:</h2>
 					<p className="break-all">{uploadedMedia}</p>
 				</div>
 			)}
 
 			{retrievedMedia && (
 				<div className="mb-6">
-					<h2 className="text-xl font-semibold mb-2 ">
-						Retrieved Media:
-					</h2>
+					<h2 className="text-xl font-semibold mb-2 ">Retrieved Media:</h2>
 					<img
 						src={retrievedMedia}
 						alt="Retrieved Media"
