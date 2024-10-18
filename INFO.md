@@ -119,3 +119,11 @@ Deploy: go to
 Buy SuiNS requires 2 SUI
 
 https://testnet.suins.io/
+
+## Walrus Site Builder
+
+switch to site-builder repository and run
+
+```bash
+./target/release/site-builder publish /Users/lin/Documents/Projects/DefyRent/packages/frontend/dist --epochs 1
+```
