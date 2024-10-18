@@ -4,7 +4,10 @@ Resources
 @mysten/dapp-kit React SDK
 https://sdk.mystenlabs.com/typescript
 
-use Ask Sui Al https://docs.sui.io/ 
+use Ask Sui Al https://docs.sui.io/
+
+scaffold documentation
+https://sui-dapp-starter.dev/docs/category/hooks
 
 ## Instructions
 
@@ -79,7 +82,7 @@ sui client call --function get_message --module message --package 0xec8ca60d8df8
 
 transaction
 
-https://testnet.suivision.xyz/txblock/7WjvUhcpGbgBpv4MBAnGWMXMZhcBw4NgCb4ocqEcauMu
+https://testnet.suivision.xyz/txblock/47RMMG46C11ucrNoPqfFgZUXmL9utp3e5BGVpKDUb4Qo
 
 smart contract
 
