@@ -1,9 +1,9 @@
 import type { FC } from "react";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-import Layout from "~~/components/layout/Layout";
-import GreetingForm from "~~/pages/GreetingForm";
 import NetworkSupportChecker from "./components/NetworkSupportChecker";
+import Layout from "./components/layout/Layout";
 import Hello from "./pages/Hello";
+import DefyRentHomepage from "./pages/Home";
 import PaymentPage from "./pages/Payment";
 import Walrus from "./pages/Walrus";
 
@@ -13,7 +13,7 @@ const App: FC = () => {
 			<NetworkSupportChecker />
 			<Router>
 				<Routes>
-					<Route path="/" element={<GreetingForm />} />
+					<Route path="/" element={<DefyRentHomepage />} />
 					<Route path="/alpha" element={<Hello />} />
 					<Route path="/walrus" element={<Walrus />} />
 					<Route path="/payment" element={<PaymentPage />} />

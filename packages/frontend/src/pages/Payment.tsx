@@ -7,61 +7,6 @@ import { TESTNET_CONTRACT_PACKAGE_ID } from "~~/config/networks";
 import { NFTInfo } from "~~/constants/info";
 import useTransact from "~~/hooks/useTransact";
 
-interface SuccessModalProps {
-	transactionNumber: string;
-	amount: number;
-	paymentMethod: string;
-	onClose: () => void;
-}
-
-type CertifiedData = {
-	alreadyCertified: {
-		blobId: string;
-		eventOrObject: {
-			Event: {
-				txDigest: string;
-				eventSeq: string;
-			};
-		};
-		endEpoch: number;
-	};
-};
-
-type BlobStorage = {
-	id: string;
-	startEpoch: number;
-	endEpoch: number;
-	storageSize: number;
-};
-
-type BlobObject = {
-	id: string;
-	registeredEpoch: number;
-	blobId: string;
-	size: number;
-	encodingType: string;
-	certifiedEpoch: number;
-	storage: BlobStorage;
-	deletable: boolean;
-};
-
-type ResourceOperation = {
-	RegisterFromScratch: {
-		encoded_length: number;
-		epochs_ahead: number;
-	};
-};
-
-type NewlyCreated = {
-	blobObject: BlobObject;
-	resourceOperation: ResourceOperation;
-	cost: number;
-};
-
-type NewlyCreatedRoot = {
-	newlyCreated: NewlyCreated;
-};
-
 const SuccessModal: React.FC<SuccessModalProps> = ({
 	transactionNumber,
 	amount,
@@ -192,7 +137,11 @@ function PaymentPage() {
 		try {
 			const url = await uploadToWalrus();
 			await transact(
-				prepareTransaction(TESTNET_CONTRACT_PACKAGE_ID, "Rental Unit #2847", url),
+				prepareTransaction(
+					TESTNET_CONTRACT_PACKAGE_ID,
+					"Rental Unit #2847",
+					url,
+				),
 			);
 		} catch (err) {
 			console.error("Error during payment process:", err);
@@ -229,6 +178,7 @@ function PaymentPage() {
 			>
 				{isLoading ? "Processing..." : "Pay Deposit"}
 			</button>
+			<span>{account.address}</span>
 			{error && <p className="error text-red-500 mt-4">{error}</p>}
 			{showModal && (
 				<SuccessModal

@@ -1,3 +1,3 @@
-# Sui dApp Starter: Frontend
+# DefyRent: Frontend
 
 Please find the root project [README](../../README.md).

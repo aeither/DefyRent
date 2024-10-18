@@ -22,11 +22,11 @@ const Header = () => {
           <Balance />
           <NetworkType />
         </div>
-
+{/* 
         <div className="flex flex-row items-center justify-center gap-3">
           <Link href="/alpha" className="text-sds-dark hover:no-underline dark:text-sds-light">Alpha</Link>
           <Link href="/beta" className="text-sds-dark hover:no-underline dark:text-sds-light">Beta</Link>
-        </div>
+        </div> */}
 
         {/* @todo: Find a better way to style ConnectButton for example through className, which is currently not supported. */}
         {/* className="[&>button]:!px-4 [&>button]:!py-2 [&>div]:!text-base" */}

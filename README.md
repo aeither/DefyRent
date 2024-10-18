@@ -1,4 +1,19 @@
-# Sui dApp Starter - Easy-to-Use Full-Stack Sui Starter
+# DefyRent - Decentralized Rent Deposit Platform
+
+transparent, efficient, and secure platform for managing rental deposits using Walrus's decentralized storage capabilities. The system would address common issues in the traditional rental market, such as high upfront costs for tenants and trust issues between landlords and tenants.
+The benefits include reduced costs, increased trust, efficiency, and global accessibility.
+
+Bootstraped with `https://sui-dapp-starter.dev/`
+
+SUI Walrus Integration
+- Decentralized Frontend
+- SUI Move Smart Contract
+- Metadata stored on Walrus
+- Blob stored on Walrus
+
+
+
+## Easy-to-Use Full-Stack Sui Starter
 [![Build and Lint (frontend)](https://github.com/kkomelin/sui-dapp-starter/actions/workflows/build_and_lint.yaml/badge.svg)](https://github.com/kkomelin/sui-dapp-starter/actions/workflows/build_and_lint.yaml)
 [![Discord chat](https://img.shields.io/discord/1237259509366521866.svg?logo=discord&style=flat-square)](https://discord.com/invite/HuDPpXz4Hx)
 

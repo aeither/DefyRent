@@ -86,7 +86,7 @@ module greeting::greeting {
         // Project URL is usually static.
         utf8(b"https://demo.sui-dapp-starter.dev"),
         // Creator field can be any.
-        utf8(b"Sui dApp Starter"),
+        utf8(b"DefyRent"),
         // SVG emojis from https://github.com/twitter/twemoji are used, so it's necessary to provide the license info.
         utf8(b"Graphics borrowed from https://github.com/twitter/twemoji and licensed under CC-BY 4.0: https://creativecommons.org/licenses/by/4.0/"),
     ];
