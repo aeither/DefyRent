@@ -26,5 +26,7 @@ fetch("http://walrus-testnet.stakingdefenseleague.com:9001/v1/store", {
 /**
  * retrieving content
  * http://walrus-testnet.stakingdefenseleague.com:9000/v1/y1GuyqLZ6IhZGHvHnoSKGQVexrTD6vqssfHxkTrs9cc
+ * 
+ * pdf
  * http://walrus-testnet.stakingdefenseleague.com:9000/v1/MlJ2y4tENbvFjbPVU3MN5nuBlx9tcwDASZheJ_K24MU
  */

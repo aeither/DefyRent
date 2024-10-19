@@ -145,11 +145,7 @@ export default function DefyRentHomepage() {
 		try {
 			const url = await uploadToWalrus();
 			await transact(
-				prepareTransaction(
-					TESTNET_CONTRACT_PACKAGE_ID,
-					"Rental Unit #2847",
-					url,
-				),
+				prepareTransaction(TESTNET_CONTRACT_PACKAGE_ID, NFTInfo.name, url),
 			);
 		} catch (err) {
 			console.error("Error during payment process:", err);

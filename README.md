@@ -3,15 +3,16 @@
 transparent, efficient, and secure platform for managing rental deposits using Walrus's decentralized storage capabilities. The system would address common issues in the traditional rental market, such as high upfront costs for tenants and trust issues between landlords and tenants.
 The benefits include reduced costs, increased trust, efficiency, and global accessibility.
 
-Bootstraped with `https://sui-dapp-starter.dev/`
-
 SUI Walrus Integration
-- Decentralized Frontend
-- SUI Move Smart Contract
+- Bootstraped with `https://sui-dapp-starter.dev/`
+- Decentralized Frontend on Walrus
 - Metadata stored on Walrus
-- Blob stored on Walrus
+- Blob Rental Contract stored on Walrus
+- SUI Move Smart Contract
 
+# DEMO
 
+https://5rki03cuy8elqpezfehxecjs0eokndf9aywggx8dns33r9nprk.walrus.site
 
 ## Easy-to-Use Full-Stack Sui Starter
 [![Build and Lint (frontend)](https://github.com/kkomelin/sui-dapp-starter/actions/workflows/build_and_lint.yaml/badge.svg)](https://github.com/kkomelin/sui-dapp-starter/actions/workflows/build_and_lint.yaml)
