@@ -1,117 +1,217 @@
-// import {
-//     ConnectButton,
-//     useCurrentAccount,
-//     useSignAndExecuteTransaction,
-//     useSuiClient,
-// } from "@mysten/dapp-kit";
-// import { Transaction } from "@mysten/sui/transactions";
-// import { SUI_CLOCK_OBJECT_ID } from "@mysten/sui/utils";
-// import { useState } from "react";
+import {
+    ConnectButton,
+    useCurrentAccount,
+    useSignAndExecuteTransaction,
+    useSuiClient,
+} from "@mysten/dapp-kit";
+import { Transaction } from "@mysten/sui/transactions";
+import { useEffect, useState } from "react";
+import { TESTNET_CONTRACT_PACKAGE_ID } from "~~/config/networks";
 
-// function Locker() {
-// 	const [depositAmount, setDepositAmount] = useState("2000000000"); // 2 SUI in MIST
-// 	const [withdrawAmount, setWithdrawAmount] = useState("2000000000"); // 2 SUI in MIST
-// 	const [digest, setDigest] = useState("");
-// 	const currentAccount = useCurrentAccount();
-// 	const client = useSuiClient();
+const DEPOSIT_AMOUNT = 100000000;
 
-// 	const { mutate: signAndExecuteTransaction } = useSignAndExecuteTransaction({
-// 		execute: async ({ bytes, signature }) =>
-// 			await client.executeTransactionBlock({
-// 				transactionBlock: bytes,
-// 				signature,
-// 				options: {
-// 					showRawEffects: true,
-// 					showObjectChanges: true,
-// 				},
-// 			}),
-// 	});
+function Vault() {
+	const [digest, setDigest] = useState("");
+	const [vaultId, setVaultId] = useState("");
+	const [vaultOwnerCapId, setVaultOwnerCapId] = useState("");
+	const currentAccount = useCurrentAccount();
+	const client = useSuiClient();
 
-// 	const handleDeposit = () => {
-// 		if (!currentAccount) return;
+	const { mutate: signAndExecuteTransaction } = useSignAndExecuteTransaction();
 
-// 		const txb = new Transaction();
+	useEffect(() => {
+		if (currentAccount) {
+			fetchVaultAndCapIds();
+		}
+	}, [currentAccount]);
 
-// 		txb.moveCall({
-// 			target: "0x<PACKAGE_ID>::deepbook::deposit",
-// 			arguments: [
-// 				txb.object("<POOL_ID>"), // Replace with your pool ID
-// 				txb.splitCoins(txb.gas, [txb.pure.u64(depositAmount)]),
-// 				txb.object(SUI_CLOCK_OBJECT_ID),
-// 			],
-// 		});
+	const fetchVaultAndCapIds = async () => {
+		if (!currentAccount) return;
 
-// 		signAndExecuteTransaction(
-// 			{
-// 				transaction: txb,
-// 				chain: "sui:testnet",
-// 			},
-// 			{
-// 				onSuccess: (result) => {
-// 					console.log("Deposit executed", result);
-// 					setDigest(result.digest);
-// 				},
-// 				onError: (error) => {
-// 					console.error("Error executing deposit", error);
-// 				},
-// 			},
-// 		);
-// 	};
+		try {
+			const objects = await client.getOwnedObjects({
+				owner: currentAccount.address,
+				options: { showOwner: true, showType: true },
+			});
 
-// 	const handleWithdraw = () => {
-// 		if (!currentAccount) return;
+			console.log("Fetched objects:", objects);
 
-// 		const txb = new Transaction();
+			const vault = objects.data.find((obj) =>
+				obj.data?.type?.includes("::vault::Vault"),
+			);
+			const vaultOwnerCap = objects.data.find((obj) =>
+				obj.data?.type?.includes("::vault::VaultOwnerCap"),
+			);
 
-// 		txb.moveCall({
-// 			target: "0x<PACKAGE_ID>::deepbook::withdraw_base",
-// 			arguments: [
-// 				txb.object("<POOL_ID>"), // Replace with your pool ID
-// 				txb.pure.u64(withdrawAmount),
-// 				txb.object(SUI_CLOCK_OBJECT_ID),
-// 			],
-// 		});
+			console.log("Found vault:", vault);
+			console.log("Found vaultOwnerCap:", vaultOwnerCap);
 
-// 		signAndExecuteTransaction(
-// 			{
-// 				transaction: txb,
-// 				chain: "sui:testnet",
-// 			},
-// 			{
-// 				onSuccess: (result) => {
-// 					console.log("Withdrawal executed", result);
-// 					setDigest(result.digest);
-// 				},
-// 				onError: (error) => {
-// 					console.error("Error executing withdrawal", error);
-// 				},
-// 			},
-// 		);
-// 	};
+			if (vault && vault.data?.objectId) {
+				const newVaultId = vault.data.objectId;
+				console.log("Setting vaultId to:", newVaultId);
+				setVaultId(newVaultId);
+			} else {
+				console.log("No valid Vault found");
+				setVaultId("");
+			}
 
-// 	return (
-// 		<div style={{ padding: 20 }}>
-// 			<h1>Sui Deposit/Withdraw dApp</h1>
-// 			<ConnectButton />
-// 			{currentAccount && (
-// 				<>
-// 					<div>
-// 						<h2>Deposit 2 SUI:</h2>
-// 						<button type="button" onClick={handleDeposit}>
-// 							Deposit
-// 						</button>
-// 					</div>
-// 					<div>
-// 						<h2>Withdraw 2 SUI:</h2>
-// 						<button type="button" onClick={handleWithdraw}>
-// 							Withdraw
-// 						</button>
-// 					</div>
-// 					<div>Transaction Digest: {digest}</div>
-// 				</>
-// 			)}
-// 		</div>
-// 	);
-// }
+			if (vaultOwnerCap && vaultOwnerCap.data?.objectId) {
+				const newVaultOwnerCapId = vaultOwnerCap.data.objectId;
+				console.log("Setting vaultOwnerCapId to:", newVaultOwnerCapId);
+				setVaultOwnerCapId(newVaultOwnerCapId);
+			} else {
+				console.log("No valid VaultOwnerCap found");
+				setVaultOwnerCapId("");
+			}
+		} catch (error) {
+			console.error("Error fetching Vault and VaultOwnerCap IDs:", error);
+			setVaultId("");
+			setVaultOwnerCapId("");
+		}
+	};
 
-// export default Locker;
+	const handleCreateVault = async () => {
+		if (!currentAccount) return;
+
+		const txb = new Transaction();
+
+		txb.moveCall({
+			target: `${TESTNET_CONTRACT_PACKAGE_ID}::vault::create_vault`,
+			arguments: [],
+		});
+
+		try {
+			await signAndExecuteTransaction(
+				{
+					transaction: txb,
+					chain: "sui:testnet",
+				},
+				{
+					onSuccess: (result) => {
+						console.log("Transaction successful", result);
+						setDigest(result.digest);
+						fetchVaultAndCapIds();
+					},
+					onError: (error) => {
+						console.error("Transaction failed", error);
+					},
+				},
+			);
+		} catch (error) {
+			console.error("Error executing transaction:", error);
+		}
+	};
+
+	const handleDeposit = async () => {
+		if (!currentAccount || !vaultId) {
+			console.error("Cannot deposit: currentAccount or vaultId is missing");
+			return;
+		}
+
+		const txb = new Transaction();
+		txb.setGasBudget(DEPOSIT_AMOUNT);
+
+		// Split the gas coin
+		const [coin] = txb.splitCoins(txb.gas, [DEPOSIT_AMOUNT]);
+
+		txb.moveCall({
+			target: `${TESTNET_CONTRACT_PACKAGE_ID}::vault::deposit`,
+			arguments: [txb.object(vaultId), coin],
+			typeArguments: ["0x2::sui::SUI"], // Add this line to specify the coin type
+		});
+
+		try {
+			await signAndExecuteTransaction(
+				{
+					transaction: txb,
+					chain: "sui:testnet",
+				},
+				{
+					onSuccess: (result) => {
+						console.log("Deposit executed", result);
+						setDigest(result.digest);
+					},
+					onError: (error) => {
+						console.error("Error executing deposit", error);
+					},
+				},
+			);
+		} catch (error) {
+			console.error("Error executing transaction:", error);
+		}
+	};
+
+	const handleWithdraw = () => {
+		if (!currentAccount || !vaultId || !vaultOwnerCapId) {
+			console.error(
+				"Cannot withdraw: currentAccount, vaultId, or vaultOwnerCapId is missing",
+			);
+			return;
+		}
+
+		const txb = new Transaction();
+
+		txb.moveCall({
+			target: `${TESTNET_CONTRACT_PACKAGE_ID}::vault::withdraw`,
+			arguments: [
+				txb.object(vaultId),
+				txb.object(vaultOwnerCapId),
+				txb.pure.u64(DEPOSIT_AMOUNT),
+			],
+		});
+
+		signAndExecuteTransaction(
+			{
+				transaction: txb,
+				chain: "sui:testnet",
+			},
+			{
+				onSuccess: (result) => {
+					console.log("Withdrawal executed", result);
+					setDigest(result.digest);
+				},
+				onError: (error) => {
+					console.error("Error executing withdrawal", error);
+				},
+			},
+		);
+	};
+
+	return (
+		<div style={{ padding: 20 }}>
+			<h1>Sui Vault dApp</h1>
+			<ConnectButton />
+			{currentAccount && (
+				<>
+					<div>
+						<h2>Create Vault:</h2>
+						<button type="button" onClick={handleCreateVault}>
+							Create Vault
+						</button>
+					</div>
+					<div>
+						<h2>Deposit 0.1 SUI:</h2>
+						<button type="button" onClick={handleDeposit} disabled={!vaultId}>
+							Deposit
+						</button>
+					</div>
+					<div>
+						<h2>Withdraw 0.1 SUI:</h2>
+						<button
+							type="button"
+							onClick={handleWithdraw}
+							disabled={!vaultId || !vaultOwnerCapId}
+						>
+							Withdraw
+						</button>
+					</div>
+					<div>Transaction Digest: {digest}</div>
+					<div>Vault ID: {vaultId || "Not found"}</div>
+					<div>VaultOwnerCap ID: {vaultOwnerCapId || "Not found"}</div>
+				</>
+			)}
+		</div>
+	);
+}
+
+export default Vault;
