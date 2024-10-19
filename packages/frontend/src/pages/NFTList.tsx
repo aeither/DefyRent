@@ -3,6 +3,7 @@ import { SuiClient, getFullnodeUrl } from "@mysten/sui/client";
 import type React from "react";
 import { useEffect, useState } from "react";
 import { TESTNET_CONTRACT_PACKAGE_ID } from "~~/config/networks";
+import useDestroyNFT from "~~/hooks/useDestroyNFT";
 
 type NFTMetadata = {
 	name: string;
@@ -74,6 +75,78 @@ type NFTData = {
 	metadata?: NFTMetadata;
 };
 
+const NFTCard: React.FC<{ nft: NFTData }> = ({ nft }) => {
+	const destroyNFT = useDestroyNFT(nft.objectId);
+
+	const handleClaimDeposit = async () => {
+		const result = await destroyNFT();
+		if (result) {
+			console.log("Deposit claimed successfully");
+			// You can add additional logic here, such as updating the UI or state
+		} else {
+			console.error("Failed to claim deposit");
+		}
+	};
+
+	if (!nft.metadata) return null;
+
+	return (
+		<div className="bg-black/35 rounded-lg shadow-md overflow-hidden">
+			<img
+				src={nft.metadata.image}
+				alt={nft.metadata.name}
+				className="w-full h-48 object-cover"
+			/>
+			<div className="p-4">
+				<h2 className="text-xl font-semibold mb-2">{nft.metadata.name}</h2>
+				<p className="text-gray-600 mb-2">{nft.metadata.description}</p>
+				<h3 className="text-lg font-semibold mt-4 mb-2">Property Details</h3>
+				<p>
+					Address:{" "}
+					{`${nft.metadata.properties.address.street}, ${nft.metadata.properties.address.unit}, ${nft.metadata.properties.address.city}, ${nft.metadata.properties.address.state}, ${nft.metadata.properties.address.country}`}
+				</p>
+				<h3 className="text-lg font-semibold mt-4 mb-2">Lease Information</h3>
+				<p>Start Date: {nft.metadata.properties.lease.startDate}</p>
+				<p>End Date: {nft.metadata.properties.lease.endDate}</p>
+				<p>
+					Rent:{" "}
+					{`${nft.metadata.properties.lease.rentAmount} ${nft.metadata.properties.lease.rentCurrency} (${nft.metadata.properties.lease.paymentFrequency})`}
+				</p>
+				<p>
+					Deposit:{" "}
+					{`${nft.metadata.properties.lease.depositAmount} ${nft.metadata.properties.lease.depositCurrency}`}
+				</p>
+				<h3 className="text-lg font-semibold mt-4 mb-2">Attributes</h3>
+				<ul>
+					{nft.metadata.attributes.map((attr, index) => (
+						// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+						<li key={index}>
+							{`${attr.trait_type}: ${attr.value}${attr.unit ? ` ${attr.unit}` : ""}`}
+						</li>
+					))}
+				</ul>
+				<div className="mt-4 space-y-2">
+					<a
+						href={nft.metadata.external_url}
+						target="_blank"
+						rel="noopener noreferrer"
+						className="text-blue-500 hover:underline block"
+					>
+						Download Rental Contract
+					</a>
+					<button
+						type="button"
+						onClick={handleClaimDeposit}
+						className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+					>
+						Claim Deposit
+					</button>
+				</div>
+			</div>
+		</div>
+	);
+};
+
 const NFTList: React.FC = () => {
 	const [nfts, setNfts] = useState<NFTData[]>([]);
 	const account = useCurrentAccount();
@@ -142,67 +215,7 @@ const NFTList: React.FC = () => {
 			) : (
 				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 					{nfts.map((nft) => (
-						<div
-							key={nft.objectId}
-							className="bg-black/35 rounded-lg shadow-md overflow-hidden"
-						>
-							{nft.metadata && (
-								<>
-									<img
-										src={nft.metadata.image}
-										alt={nft.metadata.name}
-										className="w-full h-48 object-cover"
-									/>
-									<div className="p-4">
-										<h2 className="text-xl font-semibold mb-2">
-											{nft.metadata.name}
-										</h2>
-										<p className="text-gray-600 mb-2">
-											{nft.metadata.description}
-										</p>
-										<h3 className="text-lg font-semibold mt-4 mb-2">
-											Property Details
-										</h3>
-										<p>
-											Address:{" "}
-											{`${nft.metadata.properties.address.street}, ${nft.metadata.properties.address.unit}, ${nft.metadata.properties.address.city}, ${nft.metadata.properties.address.state}, ${nft.metadata.properties.address.country}`}
-										</p>
-										<h3 className="text-lg font-semibold mt-4 mb-2">
-											Lease Information
-										</h3>
-										<p>Start Date: {nft.metadata.properties.lease.startDate}</p>
-										<p>End Date: {nft.metadata.properties.lease.endDate}</p>
-										<p>
-											Rent:{" "}
-											{`${nft.metadata.properties.lease.rentAmount} ${nft.metadata.properties.lease.rentCurrency} (${nft.metadata.properties.lease.paymentFrequency})`}
-										</p>
-										<p>
-											Deposit:{" "}
-											{`${nft.metadata.properties.lease.depositAmount} ${nft.metadata.properties.lease.depositCurrency}`}
-										</p>
-										<h3 className="text-lg font-semibold mt-4 mb-2">
-											Attributes
-										</h3>
-										<ul>
-											{nft.metadata.attributes.map((attr, index) => (
-												<li
-													// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-													key={index}
-												>{`${attr.trait_type}: ${attr.value}${attr.unit ? ` ${attr.unit}` : ""}`}</li>
-											))}
-										</ul>
-										<a
-											href={nft.metadata.external_url}
-											target="_blank"
-											rel="noopener noreferrer"
-											className="text-blue-500 hover:underline mt-4 inline-block"
-										>
-											Download Rental Contract
-										</a>
-									</div>
-								</>
-							)}
-						</div>
+						<NFTCard key={nft.objectId} nft={nft} />
 					))}
 				</div>
 			)}
