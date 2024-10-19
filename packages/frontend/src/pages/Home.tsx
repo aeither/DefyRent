@@ -76,7 +76,7 @@ export default function DefyRentHomepage() {
 		setError(null);
 		try {
 			const response = await fetch(
-				"http://walrus-testnet.stakingdefenseleague.com:9001/v1/store",
+				"https://walrus-publish-testnet.chainode.tech:9003/v1/store",
 				{
 					method: "PUT",
 					headers: {
