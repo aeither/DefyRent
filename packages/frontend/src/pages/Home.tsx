@@ -154,7 +154,7 @@ export default function DefyRentHomepage() {
 
 	const closeModalAndRedirect = () => {
 		setShowModal(false);
-		navigate("/");
+		navigate("/list");
 	};
 
 	return (

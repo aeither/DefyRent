@@ -4,6 +4,7 @@ import NetworkSupportChecker from "./components/NetworkSupportChecker";
 import Layout from "./components/layout/Layout";
 import Hello from "./pages/Hello";
 import DefyRentHomepage from "./pages/Home";
+import NFTList from "./pages/NFTList";
 import PaymentPage from "./pages/Payment";
 import Walrus from "./pages/Walrus";
 
@@ -17,6 +18,7 @@ const App: FC = () => {
 					<Route path="/alpha" element={<Hello />} />
 					<Route path="/walrus" element={<Walrus />} />
 					<Route path="/payment" element={<PaymentPage />} />
+					<Route path="/list" element={<NFTList />} />
 				</Routes>
 			</Router>
 		</Layout>
