@@ -4,6 +4,49 @@ import type React from "react";
 import { useEffect, useState } from "react";
 import { TESTNET_CONTRACT_PACKAGE_ID } from "~~/config/networks";
 
+type NFTMetadata = {
+	name: string;
+	description: string;
+	image: string;
+	external_url: string;
+	attributes: Array<{
+		trait_type: string;
+		value: string | number;
+		unit?: string;
+	}>;
+	properties: {
+		address: {
+			street: string;
+			unit: string;
+			city: string;
+			state: string;
+			country: string;
+			postalCode: string;
+		};
+		renter: {
+			name: string;
+			walletAddress: string;
+			email: string;
+			phone: string;
+		};
+		landlord: {
+			name: string;
+			walletAddress: string;
+			email: string;
+			phone: string;
+		};
+		lease: {
+			startDate: string;
+			endDate: string;
+			rentAmount: number;
+			rentCurrency: string;
+			paymentFrequency: string;
+			depositAmount: number;
+			depositCurrency: string;
+		};
+	};
+};
+
 type NFTData = {
 	objectId: string;
 	version: string;
@@ -28,6 +71,7 @@ type NFTData = {
 			url: string;
 		};
 	};
+	metadata?: NFTMetadata;
 };
 
 const NFTList: React.FC = () => {
@@ -54,14 +98,28 @@ const NFTList: React.FC = () => {
 					},
 				});
 
-				const nftData = ownedObjects.data.map((obj: any) => ({
-					objectId: obj.data.objectId,
-					version: obj.data.version,
-					digest: obj.data.digest,
-					type: obj.data.type,
-					display: obj.data.display?.data || {},
-					content: obj.data.content,
-				}));
+				const nftData = await Promise.all(
+					ownedObjects.data.map(async (obj: any) => {
+						const nft: NFTData = {
+							objectId: obj.data.objectId,
+							version: obj.data.version,
+							digest: obj.data.digest,
+							type: obj.data.type,
+							display: obj.data.display?.data || {},
+							content: obj.data.content,
+						};
+
+						try {
+							const metadataResponse = await fetch(nft.display.image_url);
+							const metadata: NFTMetadata = await metadataResponse.json();
+							nft.metadata = metadata;
+						} catch (error) {
+							console.error("Error fetching NFT metadata:", error);
+						}
+
+						return nft;
+					}),
+				);
 
 				setNfts(nftData);
 			} catch (error) {
@@ -86,30 +144,64 @@ const NFTList: React.FC = () => {
 					{nfts.map((nft) => (
 						<div
 							key={nft.objectId}
-							className="bg-white rounded-lg shadow-md overflow-hidden"
+							className="bg-black/35 rounded-lg shadow-md overflow-hidden"
 						>
-							<img
-								src={nft.display.image_url}
-								alt={nft.display.name}
-								className="w-full h-48 object-cover"
-							/>
-							<div className="p-4">
-								<h2 className="text-xl font-semibold mb-2">
-									{nft.display.name}
-								</h2>
-								<p className="text-gray-600 mb-2">{nft.display.description}</p>
-								<p className="text-sm text-gray-500">
-									Creator: {nft.display.creator}
-								</p>
-								<a
-									href={nft.display.project_url}
-									target="_blank"
-									rel="noopener noreferrer"
-									className="text-blue-500 hover:underline"
-								>
-									Project URL
-								</a>
-							</div>
+							{nft.metadata && (
+								<>
+									<img
+										src={nft.metadata.image}
+										alt={nft.metadata.name}
+										className="w-full h-48 object-cover"
+									/>
+									<div className="p-4">
+										<h2 className="text-xl font-semibold mb-2">
+											{nft.metadata.name}
+										</h2>
+										<p className="text-gray-600 mb-2">
+											{nft.metadata.description}
+										</p>
+										<h3 className="text-lg font-semibold mt-4 mb-2">
+											Property Details
+										</h3>
+										<p>
+											Address:{" "}
+											{`${nft.metadata.properties.address.street}, ${nft.metadata.properties.address.unit}, ${nft.metadata.properties.address.city}, ${nft.metadata.properties.address.state}, ${nft.metadata.properties.address.country}`}
+										</p>
+										<h3 className="text-lg font-semibold mt-4 mb-2">
+											Lease Information
+										</h3>
+										<p>Start Date: {nft.metadata.properties.lease.startDate}</p>
+										<p>End Date: {nft.metadata.properties.lease.endDate}</p>
+										<p>
+											Rent:{" "}
+											{`${nft.metadata.properties.lease.rentAmount} ${nft.metadata.properties.lease.rentCurrency} (${nft.metadata.properties.lease.paymentFrequency})`}
+										</p>
+										<p>
+											Deposit:{" "}
+											{`${nft.metadata.properties.lease.depositAmount} ${nft.metadata.properties.lease.depositCurrency}`}
+										</p>
+										<h3 className="text-lg font-semibold mt-4 mb-2">
+											Attributes
+										</h3>
+										<ul>
+											{nft.metadata.attributes.map((attr, index) => (
+												<li
+													// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+													key={index}
+												>{`${attr.trait_type}: ${attr.value}${attr.unit ? ` ${attr.unit}` : ""}`}</li>
+											))}
+										</ul>
+										<a
+											href={nft.metadata.external_url}
+											target="_blank"
+											rel="noopener noreferrer"
+											className="text-blue-500 hover:underline mt-4 inline-block"
+										>
+											Download Rental Contract
+										</a>
+									</div>
+								</>
+							)}
 						</div>
 					))}
 				</div>
