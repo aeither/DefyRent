@@ -12,7 +12,7 @@ SUI Walrus Integration
 
 # DEMO
 
-https://5rki03cuy8elqpezfehxecjs0eokndf9aywggx8dns33r9nprk.walrus.site
+https://yz9aeb8602xan7po1gqqme3kj8x1fmb0y10gt3ydww6qnre6f.walrus.site
 
 ## Easy-to-Use Full-Stack Sui Starter
 [![Build and Lint (frontend)](https://github.com/kkomelin/sui-dapp-starter/actions/workflows/build_and_lint.yaml/badge.svg)](https://github.com/kkomelin/sui-dapp-starter/actions/workflows/build_and_lint.yaml)

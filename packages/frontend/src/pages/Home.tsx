@@ -121,6 +121,15 @@ export default function DefyRentHomepage() {
 
 	const prepareTransaction = (packageId: string, name: string, url: string) => {
 		const tx = new Transaction();
+
+		// retrive from somewhere = getOwnObject with the client query
+		// retrive from somewhere = getOwnObject with address as param, filter by type "0x5188692189546dddf5a6032e0692a6502714705e3db9274d8bb7ef2682c098d6::message::Message"
+
+		// tx.moveCall({
+		// arguments: [admin, ]
+		// target:::nft:take_profit
+		//  });
+
 		const puppy = tx.moveCall({
 			arguments: [tx.pure.string(name), tx.pure.string(url)],
 			target: `${packageId}::nft::mint`,

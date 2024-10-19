@@ -127,3 +127,13 @@ switch to site-builder repository and run
 ```bash
 ./target/release/site-builder publish /Users/lin/Documents/Projects/DefyRent/packages/frontend/dist --epochs 1
 ```
+
+## Resources
+
+query struct: if simple just use registry to retrive objectId on smart contract side.
+https://docs.sui.io/sui-api-ref#sui_getnormalizedmovestruct
+
+
+Store SUI balance and withdraw balance
+https://github.com/MystenLabs/apps/blob/main/suifrens/suifrens/sources/genesis.move
+
