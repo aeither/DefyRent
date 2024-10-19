@@ -136,4 +136,8 @@ https://docs.sui.io/sui-api-ref#sui_getnormalizedmovestruct
 
 Store SUI balance and withdraw balance
 https://github.com/MystenLabs/apps/blob/main/suifrens/suifrens/sources/genesis.move
+need to split coin with ts sdk: https://sdk.mystenlabs.com/typescript/transaction-building/basics
 
+## tips
+
+use table instead of vector for scalability
