@@ -9,7 +9,7 @@ const useDestroyNFT = (objectId: string) => {
 
 	const prepareTransaction = (packageId: string, objectId: string) => {
 		const tx = new Transaction();
-		const puppy = tx.moveCall({
+		tx.moveCall({
 			arguments: [tx.object(objectId)],
 			target: `${packageId}::nft::destroy`,
 		});
