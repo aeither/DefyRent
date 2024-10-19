@@ -95,4 +95,39 @@ module greeting::nft_tests {
 
         test_scenario::end(scenario_val);
     }
+
+       #[test]
+    fun test_destroy_rental() {
+        let owner = @0xA;
+        let mut scenario_val = test_scenario::begin(owner);
+        let scenario = &mut scenario_val;
+
+        // Mint a rental
+        test_scenario::next_tx(scenario, owner);
+        {
+            let name = string::utf8(b"Temporary");
+            let url = string::utf8(b"https://example.com/temporary.jpg");
+            let rental = nft::mint(name, url, test_scenario::ctx(scenario));
+            nft::transfer(rental, owner);
+        };
+
+        // Verify the rental was minted
+        test_scenario::next_tx(scenario, owner);
+        {
+            let rental = test_scenario::take_from_sender<Rental>(scenario);
+            assert!(nft::name(&rental) == &string::utf8(b"Temporary"), 0);
+            assert!(nft::url(&rental) == &string::utf8(b"https://example.com/temporary.jpg"), 1);
+            
+            // Destroy the rental
+            nft::destroy(rental);
+        };
+
+        // Verify the rental no longer exists
+        test_scenario::next_tx(scenario, owner);
+        {
+            assert!(!test_scenario::has_most_recent_for_sender<Rental>(scenario), 2);
+        };
+
+        test_scenario::end(scenario_val);
+    }
 }
