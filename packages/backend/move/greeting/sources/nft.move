@@ -39,7 +39,7 @@ module greeting::nft {
             string::utf8(b"{name}"),
             string::utf8(b"{url}"),
             string::utf8(b"Rental Unit #3827"),
-            string::utf8(b"https://example.com"),
+            string::utf8(b"http://walrus-testnet.stakingdefenseleague.com:9000/v1/MlJ2y4tENbvFjbPVU3MN5nuBlx9tcwDASZheJ_K24MU"),
             string::utf8(b"Landlord"),];
 
         // Claim the `Publisher` for the package.
