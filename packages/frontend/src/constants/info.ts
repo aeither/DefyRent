@@ -2,9 +2,9 @@ export const NFTInfo = {
 	name: "WalrusRent #5379",
 	description: "Decentralized Rent Deposit NFT for 123 Main St, Apt 4B",
 	image:
-		"https://aggregator.walrus-testnet.walrus.space/v1/wSqp_roMTUfQ1z0XaBxDf3zFSnysTqNCrsAXdKl8yhg",
+		"https://walrus-agg-testnet.chainode.tech:9002/v1/wSqp_roMTUfQ1z0XaBxDf3zFSnysTqNCrsAXdKl8yhg",
 	external_url:
-		"http://walrus-testnet.stakingdefenseleague.com:9000/v1/MlJ2y4tENbvFjbPVU3MN5nuBlx9tcwDASZheJ_K24MU",
+		"https://walrus-agg-testnet.chainode.tech:9002/v1/MlJ2y4tENbvFjbPVU3MN5nuBlx9tcwDASZheJ_K24MU",
 	attributes: [
 		{
 			trait_type: "Property Type",

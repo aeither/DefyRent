@@ -16,7 +16,7 @@ const MediaUploader: React.FC = () => {
 		setError("");
 		try {
 			const response = await fetch(
-				"http://walrus-testnet.stakingdefenseleague.com:9001/v1/store",
+				"https://walrus-publish-testnet.chainode.tech:9003/v1/store",
 				{
 					method: "PUT",
 					body: inputString,
@@ -72,7 +72,7 @@ const MediaUploader: React.FC = () => {
 		setError("");
 		try {
 			const response = await fetch(
-				"http://walrus-testnet.stakingdefenseleague.com:9001/v1/store",
+				"https://walrus-agg-testnet.chainode.tech:9002/v1/store",
 				{
 					method: "PUT",
 					body: fileInputRef.current.files[0],
