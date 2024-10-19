@@ -110,14 +110,14 @@ function Vault() {
 
 		const txb = new Transaction();
 		txb.setGasBudget(DEPOSIT_AMOUNT);
-
-		// Split the gas coin
+        
+		// Create a new coin object with the deposit amount
 		const [coin] = txb.splitCoins(txb.gas, [DEPOSIT_AMOUNT]);
 
 		txb.moveCall({
 			target: `${TESTNET_CONTRACT_PACKAGE_ID}::vault::deposit`,
 			arguments: [txb.object(vaultId), coin],
-			typeArguments: ["0x2::sui::SUI"], // Add this line to specify the coin type
+			typeArguments: ["0x2::sui::SUI"],
 		});
 
 		try {
